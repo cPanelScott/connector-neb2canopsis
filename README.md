@@ -30,7 +30,7 @@ $ cd connector-neb2canopsis*
 $ make
 ```
 
-**Attention :** si vous souhaitez compiler un module Nagios 4.x (**expérimental**), il doit être compilé depuis sa branche dédiée :
+(**Attention :** si vous souhaitez compiler un module Nagios 4.x (**expérimental**), il doit être compilé depuis sa branche dédiée :)
 ```shell
 # Uniquement si l'on souhaite utiliser un module Nagios 4.x (expérimental)
 $ git checkout 4.x
@@ -43,7 +43,7 @@ $ sudo mkdir -p /usr/local/nagios/bin
 $ sudo cp neb2amqp.o /usr/local/nagios/bin/
 ```
 
-Ou, pour le module 4.x :
+(Ou, pour le module 4.x :)
 ```shell
 # Uniquement si l'on souhaite utiliser un module Nagios 4.x (expérimental)
 $ sudo cp neb2amqp-4x.o /usr/local/nagios/bin/neb2amqp.o
@@ -96,14 +96,14 @@ Les options disponibles sont les suivantes :
     amqp_wait_time =    Number of seconds before a reconnection to AMQP
 ```
 
-Le service (Nagios, Icinga...) doit ensuite être relancé pour prendre en compte ces modifications :
+Le service doit ensuite être relancé pour prendre en compte ces modifications :
 ```shell
 $ sudo service nagios restart
 ```
 
 ## Vérifier le bon lancement du module
 
-Une fois le service redémarré, les logs de Nagios/Icinga doivent donner des informations sur l'état du module.
+Une fois le service redémarré, les logs du service doivent donner des informations sur l'état du module.
 
 Par exemple, pour Nagios et son fichier `nagios.log` :
 ```
