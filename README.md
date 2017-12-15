@@ -1,8 +1,8 @@
-# Module Event Broker Nagios/Icinga pour Canopsis
+# Module Event Broker Nagios/Nagios-like pour Canopsis
 
 ## Description
 
-Ce dépôt contient un module Nagios/Icinga pour l'envoi d'évènements à Canopsis. Il est écrit en C.
+Ce dépôt contient un module (Broker) Nagios/Nagios-like pour l'envoi d'évènements à Canopsis. Il est écrit en C.
 
 ## Installation
 
@@ -19,21 +19,34 @@ $ sudo yum install git-core
 Récupérer les sources :
 ```shell
 # Depuis Git
-$ git clone https://github.com/capensis/canopsis-nagios.git
+$ git clone git@git.canopsis.net:canopsis-connectors/connector-neb2canopsis.git
 # Ou sinon, via HTTP
-$ wget https://github.com/capensis/canopsis-nagios/tarball/master -O canopsis-nagios.tgz && tar xfz canopsis-nagios.tgz
+$ wget https://git.canopsis.net/canopsis-connectors/connector-neb2canopsis/repository/master/archive.tar.gz -O canopsis-nagios.tgz && tar xfz canopsis-nagios.tgz
 ```
 
 Compiler :
 ```shell
-$ cd canopsis-*
+$ cd connector-neb2canopsis*
 $ make
+```
+
+**Attention :** si vous souhaitez compiler un module Nagios 4.x (**expérimental**), il doit être compilé depuis sa branche dédiée :
+```shell
+# Uniquement si l'on souhaite utiliser un module Nagios 4.x (expérimental)
+$ git checkout 4.x
+$ make 4x
 ```
 
 Installer le module dans un dossier dédié. Par exemple, pour Nagios :
 ```shell
 $ sudo mkdir -p /usr/local/nagios/bin
 $ sudo cp neb2amqp.o /usr/local/nagios/bin/
+```
+
+Ou, pour le module 4.x :
+```shell
+# Uniquement si l'on souhaite utiliser un module Nagios 4.x (expérimental)
+$ sudo cp neb2amqp-4x.o /usr/local/nagios/bin/neb2amqp.o
 ```
 
 ## Configuration
@@ -81,21 +94,6 @@ Les options disponibles sont les suivantes :
     urls =              If 1, add action_url and notes_url to event (default: 0)
 
     amqp_wait_time =    Number of seconds before a reconnection to AMQP
-```
-
-Dans le cas où le fichier `nagios.cfg` serait généré par un autre programme, vous pouvez tenter d'y ajouter quelque chose de ce type :
-
-```shell
-    CPS_NEB=$prefix/bin/neb2amqp.o
-    CPS_NAME=$(hostname -s)
-    CPS_SERVER="odeon.root.local"
-    if [ -e $CPS_NEB ]; then
-            grep "$CPS_NEB" $NagiosCfgFile 1> /dev/null
-            if [ $? -ne 0 ]; then
-                echo "Add NEB: '$CPS_NEB' to configuration file '$NagiosCfgFile'"
-                echo "broker_module=$CPS_NEB name=$CPS_NAME host=$CPS_SERVER" >> $NagiosCfgFile
-            fi
-    fi
 ```
 
 Le service (Nagios, Icinga...) doit ensuite être relancé pour prendre en compte ces modifications :
