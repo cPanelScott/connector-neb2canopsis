@@ -1,5 +1,5 @@
-# Tools #
+# Outils (contrib)
 
-This folder contains all tools for a better integration of Nagios/Icinga/Centreon to Canopsis.
+Ce répertoire contient des outils permettant d'améliorer l'intégration Nagios/Nagios-like vers Canopsis.
 
-* nagiostats2amqp : Send data fetched by ``nagiostats`` to Canopsis
+* nagiostats2amqp : Envoie les données récupérées par `nagiostats` vers Canopsis
