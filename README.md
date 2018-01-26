@@ -1,8 +1,10 @@
-# Module Event Broker Nagios/Nagios-like pour Canopsis
+# neb2canopsis : module (Event Broker) Nagios/Nagios-like pour Canopsis
 
 ## Description
 
 Ce dépôt contient un module (Broker) Nagios/Nagios-like pour l'envoi d'évènements à Canopsis. Il est écrit en C.
+
+**Note :** certains modules Nagios-like étaient parfois compatibles avec Centreon, mais ce n'est plus le cas dans ses dernières versions. Centreon nécessite dorénavant un module dédié, [connector-centreon-engine](https://git.canopsis.net/canopsis-connectors/connector-centreon-engine).
 
 ## Installation
 
@@ -98,7 +100,7 @@ Les options disponibles sont les suivantes :
 
 Le service doit ensuite être relancé pour prendre en compte ces modifications :
 ```shell
-$ sudo service nagios restart
+$ sudo systemctl restart nagios.service
 ```
 
 ## Vérifier le bon lancement du module
@@ -171,4 +173,4 @@ neb2amqp: FIFO: 0 events written to file
 
 ## Aller plus loin
 
-D'autres outils sont disponibles dans le répertoire `contrib`.
+D'autres outils sont disponibles dans le répertoire `contrib/`.
