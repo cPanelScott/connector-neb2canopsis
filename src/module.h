@@ -62,6 +62,7 @@ struct options
     int servicegroups;
     int acknowledgement;
     int downtime;
+    int comment;
     int custom_variables;
     int urls;
 

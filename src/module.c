@@ -74,6 +74,7 @@ int nebmodule_init (
 
     g_options.acknowledgement = FALSE;
     g_options.downtime = FALSE;
+    g_options.comment = FALSE;
     g_options.hostgroups = FALSE;
     g_options.servicegroups = FALSE;
     g_options.custom_variables = FALSE;
@@ -390,6 +391,12 @@ static void n2a_parse_arguments (const char *args_orig)
                 g_options.downtime = strtol (right, NULL, 2);
 
                 n2a_logger (LG_DEBUG, "Setting downtime to '%s'", g_options.downtime ? "true": "false");
+            }
+            else if (strcmp (left, "comment") == 0)
+            {
+                g_options.comment = strtol (right, NULL, 2);
+
+                n2a_logger (LG_DEBUG, "Setting comment to '%s'", g_options.comment ? "true": "false");
             }
             else if (strcmp (left, "custom_variables") == 0)
             {
