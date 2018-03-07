@@ -35,6 +35,7 @@
 #include "nagios-4x/broker.h"
 #include "nagios-4x/nebmodules.h"
 #include "nagios-4x/nebcallbacks.h"
+#include "nagios-4x/comments.h"
 #else
 #include "nagios/objects.h"
 #include "nagios/nagios.h"
@@ -42,6 +43,7 @@
 #include "nagios/broker.h"
 #include "nagios/nebmodules.h"
 #include "nagios/nebcallbacks.h"
+#include "nagios/comments.h"
 #endif
 
 #endif // nagios_h
