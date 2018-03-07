@@ -355,14 +355,48 @@ int n2a_event_comment (int event_type __attribute__ ((__unused__)), void *data)
 
     if (c->type == NEBTYPE_COMMENT_ADD || c->type == NEBTYPE_COMMENT_DELETE)
     {
-        char buffer[AMQP_MSG_SIZE_MAX];
+        char *buffer = NULL;
+        char *key = NULL;
 
-        /* TODO:
-         * nebstruct_comment_data_to_json (buffer, c);
-         * n2a_send_event (exchange_name, routingkey, buffer);
-         */
+        if (c->comment_type == HOST_COMMENT)
+        {
+            key = n2a_str_join (".",
+                g_options.connector,
+                g_options.eventsource_name,
+                "comment",
+                "component",
+                c->host_name,
+                NULL
+            );
+        }
+        else if (c->comment_type == SERVICE_COMMENT)
+        {
+            key = n2a_str_join (".",
+                g_options.connector,
+                g_options.eventsource_name,
+                "comment",
+                "resource",
+                c->host_name,
+                c->service_description,
+                NULL
+            );
+        }
 
-        (void) buffer;
+        /* if the rk is too big */
+        if (xstrlen (key) > g_options.max_size)
+        {
+            /* truncate it */
+            key[g_options.max_size] = 0;
+
+            /* then free available memory */
+            key = realloc (key, strlen (key) + 1);
+        }
+
+        n2a_nebstruct_comment_data_to_json (&buffer, c);
+        n2a_send_event (key, buffer);
+
+        xfree (buffer);
+        xfree (key);
     }
 
     return 0;

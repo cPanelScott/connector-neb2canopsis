@@ -494,3 +494,70 @@ int n2a_nebstruct_downtime_data_to_json (char **buffer, nebstruct_downtime_data 
 
     return 1;
 }
+
+int n2a_nebstruct_comment_data_to_json (char **buffer, nebstruct_comment_data *c)
+{
+    /* JSON data */
+    json_t *jdata = json_object ();
+
+    char *s = NULL;
+    size_t l = 0;
+
+    /* Event data */
+    char *event_type = "comment";
+    char *source_type = NULL;
+    char *action = NULL;
+
+    if (c->comment_type == HOST_COMMENT)
+    {
+        source_type = "component";
+    }
+    else if (c->comment_type == SERVICE_COMMENT)
+    {
+        source_type = "resource";
+    }
+
+    if (c->type == NEBTYPE_COMMENT_ADD)
+    {
+        action = "add";
+    }
+    else if (c->type == NEBTYPE_COMMENT_DELETE)
+    {
+        action = "delete";
+    }
+    else if (c->type == NEBTYPE_COMMENT_LOAD)
+    {
+        action = "load";
+    }
+
+    struct event_options_t options[] = {
+        {"connector",      &(g_options.connector),        json_string_nocheck},
+        {"connector_name", &(g_options.eventsource_name), json_string_nocheck},
+        {"event_type",     &(event_type),                 json_string_nocheck},
+        {"source_type",    &(source_type),                json_string_nocheck},
+        {"component",      &(c->host_name),               json_string_nocheck},
+        {"resource",       &(c->service_description),     json_string_nocheck},
+        {"action",         &(action),                     json_string_nocheck},
+        {"author",         &(c->author_name),             json_string_nocheck},
+        {"timestamp",      &(c->timestamp.tv_sec),        json_integer},
+        {"output",         &(c->comment_data),            n2a_string_to_truncated_json},
+        {"entry",          &(c->entry_time),              json_integer},
+        {"comment_id",     &(c->comment_id),              json_integer},
+        {NULL, NULL, NULL}
+    };
+
+    n2a_add_options_to_event (options, jdata, NULL, NULL);
+
+    /* generate string */
+    s = json_dumps (jdata, 0);
+    l = xstrlen (s);
+
+    /* write to buffer */
+    *buffer = xmalloc (l + 1);
+    snprintf (*buffer, l + 1, "%s", s);
+    xfree (s);
+
+    json_decref (jdata);
+
+    return 1;
+}

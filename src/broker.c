@@ -169,9 +169,10 @@ void n2a_register_callbacks (void)
         neb_register_callback (NEBCALLBACK_DOWNTIME_DATA,        g_options.nagios_handle, 0, n2a_event_downtime);
     }
 
-/*
-    neb_register_callback (NEBCALLBACK_COMMENT_DATA,         g_options.nagios_handle, 0, n2a_event_comment);
-*/
+    if (g_options.comment)
+    {
+        neb_register_callback (NEBCALLBACK_COMMENT_DATA,         g_options.nagios_handle, 0, n2a_event_comment);
+    }
 }
 
 void n2a_deregister_callbacks (void)
@@ -195,7 +196,8 @@ void n2a_deregister_callbacks (void)
         neb_deregister_callback (NEBCALLBACK_DOWNTIME_DATA,        n2a_event_downtime);
     }
 
-/*
-    neb_deregister_callback (NEBCALLBACK_COMMENT_DATA,         n2a_event_comment);
-*/
+    if (g_options.comment)
+    {
+        neb_deregister_callback (NEBCALLBACK_COMMENT_DATA,         n2a_event_comment);
+    }
 }
